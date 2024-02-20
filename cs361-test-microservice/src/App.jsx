@@ -1,15 +1,31 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Card from "./components/Card";
+import axios from "axios";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [card, setCard] = useState({});
+
+  const URL = "https://cs361-microservice.onrender.com/yugioh";
+
+  const getRandomCard = () => {
+    axios
+      .get(URL)
+      .then((response) => {
+        console.log(response.data);
+        setCard(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
-      <Card />
+      <button onClick={getRandomCard} type="button" className="btn btn-primary">
+        Generate Random Card
+      </button>
+      <Card card={card} />
     </>
   );
 }
